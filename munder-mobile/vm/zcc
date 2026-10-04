@@ -1,0 +1,4 @@
+#!/bin/bash
+args=()
+for a in "$@"; do case "$a" in -Wl,--warn-common|-Wl,--verbose|-Wl,-Map,*|-Wl,--sort-common|-Wl,--sort-section,alignment) ;; -Wp,-MD,*) args+=("-MD" "-MF" "${a#-Wp,-MD,}");; *) args+=("$a");; esac; done
+exec /tmp/zig/x/ziglang/zig cc -target x86-linux-musl -Wno-ignored-attributes "${args[@]}"
