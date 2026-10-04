@@ -1,0 +1,12 @@
+#!/bin/sh
+export PATH=/bin:/sbin:/usr/bin:/usr/sbin HOME=/home/agent TERM=vt100 PS1='agent@munder-vm:\w$ '
+mount -t proc proc /proc; mount -t sysfs sys /sys; mount -t devtmpfs dev /dev 2>/dev/null; mount -t tmpfs tmp /tmp
+mkdir -p /dev/pts && mount -t devpts devpts /dev/pts
+hostname munder-vm
+if mount -t 9p -o trans=virtio,version=9p2000.L host9p /home/agent 2>/dev/null; then echo "[munder] /home/agent <- 9p (shared with the office)"; fi
+# exec queue for Claude agents: the office drops <id>.sh into .munder/run over 9p
+mkdir -p /home/agent/.munder/run
+( cd /home/agent; while true; do for f in /home/agent/.munder/run/*.sh; do [ -e "$f" ] || continue; id="${f%.sh}"; mv "$f" "$id.run"; ( cd /home/agent && ( sh "$id.run" ) >"$id.out" 2>&1; echo $? >"$id.tmp"; mv "$id.tmp" "$id.code" ); rm -f "$id.run"; done; usleep 250000; done ) &
+echo "[munder] VM ready" > /dev/ttyS0
+for t in 1 2 0; do ( while true; do cd /home/agent; setsid sh -c "exec sh -i <>/dev/ttyS$t >&0 2>&1"; done ) & done
+wait

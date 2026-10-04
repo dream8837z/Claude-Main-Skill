@@ -1,0 +1,18 @@
+# systemd 유닛 — /etc/systemd/system/munder-mobile.service 로 복사 후
+#   sudo systemctl daemon-reload && sudo systemctl enable --now munder-mobile
+[Unit]
+Description=Munder Difflin mobile gateway
+After=network-online.target
+
+[Service]
+User=agent
+WorkingDirectory=/opt/munder-mobile
+# 토큰은 /etc/munder-mobile.env 에:  MD_TOKEN=<openssl rand -base64 32 결과>
+EnvironmentFile=/etc/munder-mobile.env
+Environment=HOST=127.0.0.1 PORT=8787 MD_WORKSPACE=/home/agent/work LANG=C.UTF-8
+ExecStart=/usr/bin/node gateway/server.js
+Restart=on-failure
+KillMode=control-group
+
+[Install]
+WantedBy=multi-user.target

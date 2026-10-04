@@ -1,0 +1,21 @@
+{
+  "name": "munder-mobile",
+  "version": "0.1.0",
+  "description": "Munder Difflin 에이전트 오피스를 VM에서 헤드리스로 돌리고 모바일 PWA로 조종하는 게이트웨이",
+  "main": "gateway/server.js",
+  "scripts": {
+    "start": "node gateway/server.js",
+    "test": "node --test test/*.test.js"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@xterm/addon-fit": "^0.11.0",
+    "@xterm/xterm": "^6.0.0",
+    "node-pty": "^1.1.0",
+    "ws": "^8.22.0"
+  },
+  "private": true,
+  "engines": {
+    "node": ">=20"
+  }
+}
