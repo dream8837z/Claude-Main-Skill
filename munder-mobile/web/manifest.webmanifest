@@ -1,0 +1,12 @@
+{
+  "name": "Munder Mobile",
+  "short_name": "Munder",
+  "description": "VM에서 돌아가는 Munder Difflin 에이전트 오피스를 폰으로 조종합니다.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F4F1EA",
+  "theme_color": "#6E1423",
+  "icons": [{ "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }]
+}

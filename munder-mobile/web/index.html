@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
+  <meta name="theme-color" content="#6E1423">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Munder Mobile</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icon.svg">
+  <link rel="stylesheet" href="vendor/xterm.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Pairing: shown until a token is stored -->
+  <section id="pair" class="screen" hidden>
+    <div class="pair-card">
+      <img src="icon.svg" alt="" width="72" height="72">
+      <h1>Munder Mobile</h1>
+      <p>가상컴퓨터(VM)에서 실행 중인 게이트웨이의 토큰을 입력하세요.<br>게이트웨이가 출력한 <b>pair URL</b>로 열면 자동 입력됩니다.</p>
+      <form id="pair-form">
+        <input id="pair-token" type="password" autocomplete="off" placeholder="MD_TOKEN" required>
+        <button type="submit" class="btn primary">연결</button>
+      </form>
+      <p id="pair-error" class="error" role="alert"></p>
+    </div>
+  </section>
+
+  <main id="app" hidden>
+    <header class="topbar">
+      <div class="brand">Munder <span>Mobile</span></div>
+      <div class="conn" id="conn" title="연결 상태"><i></i><span>연결 중…</span></div>
+    </header>
+
+    <!-- Floor: agents as desks -->
+    <section id="tab-floor" class="tab">
+      <div class="section-head">
+        <h2>오피스 플로어</h2>
+        <button class="btn primary sm" id="hire-open">+ 고용</button>
+      </div>
+      <p class="muted" id="host-line"></p>
+      <ul id="agent-list" class="agent-list"></ul>
+      <p class="empty" id="agents-empty">아직 출근한 에이전트가 없습니다. <b>+ 고용</b>으로 VM에서 에이전트 CLI를 실행하세요.</p>
+    </section>
+
+    <!-- Terminal -->
+    <section id="tab-term" class="tab" hidden>
+      <div class="term-head">
+        <select id="term-select" aria-label="에이전트 선택"></select>
+        <button class="icon-btn" id="font-dec" aria-label="글자 작게">A−</button>
+        <button class="icon-btn" id="font-inc" aria-label="글자 크게">A+</button>
+        <button class="icon-btn danger" id="term-kill" aria-label="에이전트 종료">⏻</button>
+      </div>
+      <div id="term-wrap"><div id="term"></div><p class="empty" id="term-empty">플로어에서 에이전트를 선택하세요.</p></div>
+      <div class="keybar" id="keybar">
+        <button data-k="esc">Esc</button><button data-k="tab">Tab</button><button data-k="ctrlc" class="warn">^C</button>
+        <button data-k="up">↑</button><button data-k="down">↓</button><button data-k="left">←</button><button data-k="right">→</button>
+        <button data-k="enter">⏎</button><button data-k="y">y</button><button data-k="n">n</button>
+      </div>
+      <form class="composer" id="term-form">
+        <textarea id="term-input" rows="1" placeholder="에이전트에게 입력 (Enter=전송)" enterkeyhint="send"></textarea>
+        <button class="btn primary" type="submit">전송</button>
+      </form>
+    </section>
+
+    <!-- Michael (god) chat via hive mailbox -->
+    <section id="tab-chat" class="tab" hidden>
+      <div class="section-head">
+        <h2>Michael에게</h2>
+        <select id="chat-to" aria-label="받는 사람"></select>
+      </div>
+      <ul id="msg-list" class="msg-list"></ul>
+      <form class="composer" id="chat-form">
+        <textarea id="chat-input" rows="1" placeholder="지시를 남기면 하이브 메일박스로 전달됩니다" enterkeyhint="send"></textarea>
+        <button class="btn primary" type="submit">보내기</button>
+      </form>
+    </section>
+
+    <!-- Task board + ASK ME -->
+    <section id="tab-board" class="tab" hidden>
+      <div class="section-head"><h2>태스크 보드</h2><button class="btn sm" id="board-refresh">새로고침</button></div>
+      <div id="askme"></div>
+      <div id="board"></div>
+    </section>
+
+    <nav class="tabbar" role="tablist">
+      <button data-tab="floor" class="active" role="tab"><span>🏢</span>플로어</button>
+      <button data-tab="term" role="tab"><span>⌨️</span>터미널</button>
+      <button data-tab="chat" role="tab"><span>💬</span>Michael<b id="chat-badge" hidden></b></button>
+      <button data-tab="board" role="tab"><span>📋</span>보드<b id="board-badge" hidden></b></button>
+    </nav>
+  </main>
+
+  <dialog id="hire">
+    <form method="dialog" id="hire-form">
+      <h3>에이전트 고용</h3>
+      <label>엔진 <select id="hire-provider" required></select></label>
+      <label>이름 <input id="hire-name" placeholder="예: Pam" maxlength="40"></label>
+      <label>역할 <input id="hire-role" placeholder="예: 프론트엔드 리뷰어" maxlength="200"></label>
+      <label>작업 폴더 <input id="hire-cwd" placeholder="워크스페이스 기준 상대경로 (비우면 루트)"></label>
+      <label class="check"><input type="checkbox" id="hire-god"> Michael(오케스트레이터)로 지정</label>
+      <p id="hire-error" class="error" role="alert"></p>
+      <div class="row"><button value="cancel" class="btn" formnovalidate>취소</button><button id="hire-submit" class="btn primary" value="ok">출근시키기</button></div>
+    </form>
+  </dialog>
+
+  <script src="vendor/xterm.js"></script>
+  <script src="vendor/addon-fit.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
