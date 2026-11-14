@@ -1,5 +1,7 @@
 # AI Council — 로그인 계정으로 여러 AI가 토론해 최적의 답을 내는 도구
 
+> 처음이거나 개발자가 아니라면 **[GUIDE.md](GUIDE.md)** (쉬운 가이드)부터 보세요.
+
 API 키 없이, 각 회사의 **공식 CLI에 로그인한 계정**(Claude Code, Gemini CLI, Codex CLI)을 그대로 호출합니다.
 Python 표준 라이브러리만 사용합니다.
 
@@ -26,6 +28,13 @@ python3 council.py "이 함수의 버그를 찾아 고쳐줘: ..."
 python3 council.py -f task.md -r 3        # 파일 입력, 토론 3라운드
 cat task.md | python3 council.py          # 표준입력
 ```
+
+## 휴대폰에서 쓰기
+```bash
+python3 web.py        # 또는 start-windows.bat / start-mac.command 더블클릭
+```
+화면에 나온 `http://PC주소:8787/?t=접속코드`를 같은 와이파이의 휴대폰 브라우저에서 엽니다.
+`?t=` 접속코드가 없으면 403으로 막힙니다. 한 번에 토론 하나만 진행합니다.
 
 ## 설정 (`council.config.json`)
 - `models.<이름>.cmd`: 실행할 명령입니다. `{prompt}` 자리에 프롬프트가 들어가고, `"stdin": true`면 표준입력으로 전달합니다.

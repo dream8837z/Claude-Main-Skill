@@ -107,6 +107,7 @@ def call(name: str, m: dict, prompt: str, timeout: int) -> str:
     cmd = [a for a in m["cmd"] if not (use_stdin and a == "{prompt}")]
     if not use_stdin:
         cmd = [prompt if a == "{prompt}" else a for a in cmd]
+    cmd[0] = shutil.which(cmd[0]) or cmd[0]  # Windows: resolves claude -> claude.cmd
     try:
         r = subprocess.run(cmd, input=prompt if use_stdin else None, capture_output=True,
                            text=True, timeout=timeout)
