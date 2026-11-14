@@ -1,0 +1,10 @@
+{
+  "rounds": 2,
+  "timeout_sec": 600,
+  "judge": "claude",
+  "models": {
+    "claude": { "cmd": ["claude", "-p"], "stdin": true },
+    "gemini": { "cmd": ["gemini", "-p", "{prompt}"] },
+    "codex":  { "cmd": ["codex", "exec", "--skip-git-repo-check", "{prompt}"] }
+  }
+}
