@@ -1,0 +1,10 @@
+{
+  "rounds": 1, "timeout_sec": 30, "judge": "alpha",
+  "models": {
+    "alpha": {"cmd": ["python3", "tests/fake_model.py", "alpha", "{prompt}"]},
+    "beta":  {"cmd": ["python3", "tests/fake_model.py", "beta"], "stdin": true},
+    "gamma": {"cmd": ["python3", "tests/fake_model.py", "gamma", "{prompt}"]},
+    "broken": {"cmd": ["false"]},
+    "missing": {"cmd": ["no-such-cli"]}
+  }
+}
