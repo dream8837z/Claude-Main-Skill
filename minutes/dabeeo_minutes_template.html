@@ -1,0 +1,41 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><title>Dabeeo 회의록 양식</title>
+<style>
+@page{size:A4;margin:0}
+:root{--navy:#1B2A6B;--blue:#4C7DF0;--head:#E8EDF8;--line:#1B2A6B;--sub:#9AA6C7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#fff;font-family:"Pretendard","Noto Sans KR","WenQuanYi Zen Hei",sans-serif;color:#1a1a1a}
+.page{width:794px;min-height:1123px;padding:56px 70px 48px;position:relative}
+.top{display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid var(--navy);padding-bottom:12px}
+.top img{height:26px}
+.top span{font-size:11px;color:var(--navy);letter-spacing:.2em;font-weight:700}
+h1{text-align:center;font-size:26px;font-weight:800;color:var(--navy);margin:28px 0 22px;letter-spacing:.3em}
+table{width:100%;border-collapse:collapse;font-size:12.5px;line-height:1.75}
+th,td{border:1px solid var(--line);padding:5px 9px;vertical-align:top;text-align:left}
+th{width:130px;background:var(--head);color:var(--navy);font-weight:700}
+td .ph{color:#8a93ad}
+.content{height:560px}
+.content b{display:block;margin-top:8px}
+.content b:first-child{margin-top:0}
+.note{height:110px}
+.accent{display:inline-block;width:4px;height:12px;background:var(--blue);margin-right:6px;vertical-align:-1px}
+.foot{position:absolute;left:70px;right:70px;bottom:28px;display:flex;justify-content:space-between;font-size:10.5px;color:var(--sub)}
+</style></head><body><div class="page">
+<div class="top"><img src="dabeeo_logo.png" alt="dabeeo"><span>MEETING MINUTES</span></div>
+<h1>회의록</h1>
+<table>
+<tr><th>회의주제</th><td><span class="ph">회의 주제를 입력하세요</span></td></tr>
+<tr><th>회의일자</th><td><span class="ph">YYYY.MM.DD(요일)</span></td></tr>
+<tr><th>회의장소</th><td><span class="ph">회의 장소</span></td></tr>
+<tr><th>참석자(내부)</th><td><span class="ph">이름 직급, 이름 직급, …</span></td></tr>
+<tr><th>참석자(외부)</th><td><span class="ph">소속 이름 직급, …</span></td></tr>
+<tr><th>내용</th><td class="content">
+<b><span class="accent"></span>주요 내용</b><span class="ph">회의 목적과 배경을 2~3줄로 요약</span>
+<b>1. 안건 제목</b><span class="ph">· 논의 내용<br>· 논의 내용</span>
+<b>2. 안건 제목</b><span class="ph">· 논의 내용<br>· 논의 내용</span>
+<b>3. 안건 제목</b><span class="ph">· 논의 내용</span>
+<b><span class="accent"></span>향후 조치</b><span class="ph"><b style="display:inline;margin:0">1.</b> 조치 항목 — 세부 내용 (담당 / 기한)<br><b style="display:inline;margin:0">2.</b> 조치 항목 — 세부 내용 (담당 / 기한)</span>
+</td></tr>
+<tr><th>특이사항</th><td class="note"><span class="ph">· 리스크, 보안, 결정 보류 사항 등</span></td></tr>
+</table>
+<div class="foot"><span>Dabeeo is an Earth Intelligence Company.</span><span>사내 공유용</span></div>
+</div></body></html>
