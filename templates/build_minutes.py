@@ -16,7 +16,8 @@ from docx.shared import Mm, Pt, RGBColor
 HERE = os.path.dirname(os.path.abspath(__file__))
 LOGO = os.path.join(HERE, "dabeeo_logo.png")
 LOGO_PX = (618, 138)
-FONT = "맑은 고딕"
+FONT = "Pretendard"  # 굵은 글씨 (templates/fonts, Bold)
+FONT_REG = "Pretendard Medium"  # 본문 (Regular 파일이 없어 Medium 사용)
 NAVY, BLUE, HEAD_BG, GRAY = "1B2A6B", "4C7DF0", "E8EDF8", "8A93AD"
 TAGLINE = "Dabeeo is an Earth Intelligence Company."
 CLASS = "사내 공유용"
@@ -25,8 +26,9 @@ META_KEYS = ["회의주제", "회의일자", "회의장소", "참석자(내부)"
 
 # ---------------------------------------------------------------- DOCX
 def _font(run, size, bold=False, color=None):
-    run.font.name = FONT
-    run._element.get_or_add_rPr().get_or_add_rFonts().set(qn("w:eastAsia"), FONT)
+    name = FONT if bold else FONT_REG
+    run.font.name = name
+    run._element.get_or_add_rPr().get_or_add_rFonts().set(qn("w:eastAsia"), name)
     run.font.size = Pt(size)
     run.bold = bold
     if color:
@@ -179,10 +181,11 @@ def _border(id_, sides=None, width="0.12 mm", fill=None):
 
 
 def _header():
-    font = ('<hh:font id="0" face="{f}" type="TTF" isEmbedded="0"><hh:typeInfo familyType="FCAT_GOTHIC" '
-            'weight="6" proportion="4" contrast="0" strokeVariation="1" armStyle="1" letterform="1" '
-            'midline="1" xHeight="1"/></hh:font>').format(f=FONT)
-    faces = "".join(f'<hh:fontface lang="{l}" fontCnt="1">{font}</hh:fontface>' for l in LANGS)
+    font = "".join(
+        f'<hh:font id="{i}" face="{f}" type="TTF" isEmbedded="0"><hh:typeInfo familyType="FCAT_GOTHIC" '
+        'weight="6" proportion="4" contrast="0" strokeVariation="1" armStyle="1" letterform="1" '
+        'midline="1" xHeight="1"/></hh:font>' for i, f in enumerate([FONT_REG, FONT]))
+    faces = "".join(f'<hh:fontface lang="{l}" fontCnt="2">{font}</hh:fontface>' for l in LANGS)
     thin = "0.12 mm"
     bfs = [_border(1), _border(2),
            _border(3, {s: thin for s in ("left", "right", "top", "bottom")}),
@@ -193,7 +196,7 @@ def _header():
         chars.append(
             f'<hh:charPr id="{i}" height="{int(pt * 100)}" textColor="{color}" shadeColor="none" useFontSpace="0" '
             f'useKerning="0" symMark="NONE" borderFillIDRef="2">'
-            f'<hh:fontRef {_attrs(0)}/>'
+            f'<hh:fontRef {_attrs(1 if bold else 0)}/>'
             f'<hh:ratio {_attrs(100)}/>'
             f'<hh:spacing {_attrs(0)}/>'
             f'<hh:relSz {_attrs(100)}/>'

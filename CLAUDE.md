@@ -25,6 +25,8 @@
 - 2열 표: 회의주제 / 회의일자 / 회의장소 / 참석자(내부) / 참석자(외부) / 내용 / 특이사항
 - 내용: "주요 내용" 요약 → 번호 붙인 안건 → 소제목 → `·` 글머리
 - 하단: Dabeeo is an Earth Intelligence Company. / 사내 공유용
+- 글꼴: Pretendard (`templates/fonts/`). 본문 Pretendard Medium, 굵은 글씨 Pretendard Bold (Regular 파일 미보유). PDF 빌드 전 `~/.local/share/fonts`에 설치 후 `fc-cache -f`
+- 회의장소·내부 참석자 등 원문에 없는 정보는 "(확인 필요)"로 두고 사용자에게 확인
 - 향후 조치는 원문에 조치·담당이 있을 때만 넣는다 (세미나 참관 기록에는 넣지 않음).
 
 ## 내용 원칙
